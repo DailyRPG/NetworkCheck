@@ -12,6 +12,8 @@ import io
 import urllib, base64
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
+fill_graph = True
+
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
 
@@ -40,7 +42,8 @@ def getGraph():
         unsorted_daily_data[r].reset_index(drop= True, inplace= True)
     daily_data = sorted(list(unsorted_daily_data.values()), key=lambda item: datetime.strptime(item.at[0, 'Date'], '%d/%m/%Y'))
     data.index = pd.to_datetime(data['Timestamp'], dayfirst=True)
-    plt.plot('Bit', data=data)
+    if fill_graph == True:
+        plt.plot('Bit', data=data)
     for r in range(len(daily_data)):
         daily_data[r].index = pd.to_datetime(daily_data[r]['Timestamp'], dayfirst=True)
         plt.plot('Bit', data=daily_data[r])
